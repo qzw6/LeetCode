@@ -1,0 +1,51 @@
+package main
+
+import (
+    "fmt"
+)
+
+type ListNode struct {
+    Val int
+    Next *ListNode
+}
+
+func reverseList(head *ListNode) *ListNode {
+    if head == nil {
+        return head
+    }
+    lowp, fastp := head, head.Next
+    lowp.Next = nil
+    for fastp != nil {
+        p := fastp.Next
+        fastp.Next = lowp
+        lowp = fastp
+        fastp = p
+    }
+    return lowp
+}
+
+func main() {
+    var head *ListNode = &ListNode{
+        Val: 1,
+        Next: &ListNode{
+            Val: 2,
+            Next: &ListNode{
+                Val: 3,
+                Next: nil,
+            },
+        },
+    }
+
+    p := head
+    for p != nil {
+        fmt.Printf("node val: %d\n", head.Val)
+        p = p.Next
+    }
+
+    head = reverseList(head)
+    fmt.Printf("after reverse\n")   
+    for head != nil {
+        fmt.Printf("node val: %d\n", head.Val)
+        head = head.Next
+    }
+}
