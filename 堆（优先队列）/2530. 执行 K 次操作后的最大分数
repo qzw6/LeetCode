@@ -1,0 +1,39 @@
+package main
+import (
+    "fmt"
+    "container/heap"
+)
+
+type IntHeap []int
+
+func (h IntHeap) Len() int           {return len(h)}
+func (h IntHeap) Less(i, j int) bool {return h[i] > h[j]}
+func (h IntHeap) Swap(i, j int)      {h[i], h[j] = h[j], h[i]}
+
+func (h *IntHeap) Push(x interface{}) {
+    *h = append(*h, x.(int))
+}
+func (h *IntHeap) Pop() interface{} {
+    old := *h
+    x := old[len(old)-1]
+    *h = old[:len(old)-1]
+    return x
+}
+
+func maxKelements(nums []int, k int) int64 {
+    var ans int64 = 0
+    h := (*IntHeap)(&nums)
+    heap.Init(h)
+    for index := 1; index <= k; index++ {
+        top1 := heap.Pop(h).(int)
+        ans += int64(top1)
+        heap.Push(h, (top1 + 2) / 3)
+    }
+    return ans
+}
+
+func main() {
+    nums := [6]int{756902131,995414896,95906472,149914376,387433380,848985151}
+    ans := maxKelements(nums[:], 6)
+    fmt.Println(ans)
+}
